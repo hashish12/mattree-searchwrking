@@ -122,8 +122,9 @@ export class TreeNestedOverviewExample {
           this.treeControl
             .getDescendants(node)
             .filter(node => 
-              (node.children == null || node.children.length === 0) 
-              && node.selected
+              // This is the line to select the leaf only 
+              // (node.children == null || node.children.length === 0) &&
+               node.selected
               && !this.hideLeafNode(node))
             .map((descendant) => descendant.name)
         ),
