@@ -1,6 +1,8 @@
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import {  Injectable, AfterViewInit } from '@angular/core';
+
 
 /**
  * Vehicle data with nested structure.
@@ -42,7 +44,7 @@ const TREE_DATA: VehicleNode[] = [
         name: '2 Series',
         children: [
           { name: 'Coupé', id: 5 },
-          { name: 'Gran Coupé', id: 6 },
+          { name: 'Gran Coupé', id: 6,selected: true },
         ],
       },
       {
@@ -65,6 +67,7 @@ const TREE_DATA: VehicleNode[] = [
   styleUrls: ['tree-nested-overview-example.css'],
 })
 export class TreeNestedOverviewExample {
+  
   public treeControl = new NestedTreeControl<VehicleNode>(
     (node) => node.children
   );
@@ -80,7 +83,7 @@ export class TreeNestedOverviewExample {
       this.setParent(this.dataSource.data[key], null);
     });
   }
-
+  
   public hasChild = (_: number, node: VehicleNode) =>
     !!node.children && node.children.length > 0;
 
@@ -106,7 +109,7 @@ export class TreeNestedOverviewExample {
     node.selected = checked;
     if (node.children) {
       node.children.forEach((child) => {
-        this.itemToggle(checked, child);
+        // this.itemToggle(checked, child);
       });
     }
     this.checkAllParents(node);
@@ -162,4 +165,5 @@ export class TreeNestedOverviewExample {
 
     return true
   }
+  
 }
