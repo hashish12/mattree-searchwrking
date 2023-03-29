@@ -116,18 +116,35 @@ export class TreeNestedOverviewExample {
   }
 
   public submit() {
+    // console.log(this.treeControl.getDescendants)
+    // console.log(this.dataSource.data)
+    // let result = this.dataSource.data.reduce(
+    //   (acc: string[], node: VehicleNode) =>
+    //     acc.concat(
+    //       this.treeControl
+    //         .getDescendants(node)
+    //         .filter(node => 
+    //           // This is the line to select the leaf only 
+    //           // (node.children == null || node.children.length === 0) &&
+    //            node.selected
+    //           // && !this.hideLeafNode(node)
+    //           )
+    //         .map((descendant) => descendant.name)
+    //     ),
+    //   [] as string[]
+    // );
     let result = this.dataSource.data.reduce(
-      (acc: string[], node: VehicleNode) =>
-        acc.concat(
+      (acc: string[], node: VehicleNode) => {
+        if (node.selected) {
+          acc.push(node.name);
+        }
+        return acc.concat(
           this.treeControl
             .getDescendants(node)
-            .filter(node => 
-              // This is the line to select the leaf only 
-              // (node.children == null || node.children.length === 0) &&
-               node.selected
-              && !this.hideLeafNode(node))
+            .filter(node => node.selected && !this.hideLeafNode(node))
             .map((descendant) => descendant.name)
-        ),
+        );
+      },
       [] as string[]
     );
 
