@@ -2,6 +2,7 @@ import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import {  Injectable, AfterViewInit } from '@angular/core';
+import {BehaviorSubject} from 'rxjs';
 
 
 /**
@@ -67,10 +68,10 @@ const TREE_DATA: VehicleNode[] = [
   styleUrls: ['tree-nested-overview-example.css'],
 })
 export class TreeNestedOverviewExample  implements AfterViewInit{
+  treeControl: NestedTreeControl<VehicleNode>;
+
   
-  public treeControl = new NestedTreeControl<VehicleNode>(
-    (node) => node.children
-  );
+
   
 
   public dataSource = new MatTreeNestedDataSource<VehicleNode>();
@@ -81,14 +82,19 @@ export class TreeNestedOverviewExample  implements AfterViewInit{
 
 
   ngAfterViewInit() {
-    const bmwNode = this.dataSource.data.find(node => node.name === 'BMW');
+    console.log(this.treeControl.expandAll())
+    const bmwNode = this.dataSource.data.find(node => node.name === 'Coupé');
     console.log(bmwNode);
      if (bmwNode) {
       this.treeControl.expand(bmwNode);
+      this.itemToggle(true,bmwNode);
      }
   }
 
   constructor() {
+    
+    this.treeControl = new NestedTreeControl<VehicleNode>( (node) => node.children);
+    this.treeControl.dataNodes=TREE_DATA;
     this.dataSource.data = TREE_DATA;
     Object.keys(this.dataSource.data).forEach((key) => {
       this.setParent(this.dataSource.data[key], null);
