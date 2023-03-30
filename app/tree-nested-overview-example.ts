@@ -66,16 +66,27 @@ const TREE_DATA: VehicleNode[] = [
   templateUrl: 'tree-nested-overview-example.html',
   styleUrls: ['tree-nested-overview-example.css'],
 })
-export class TreeNestedOverviewExample {
+export class TreeNestedOverviewExample  implements AfterViewInit{
   
   public treeControl = new NestedTreeControl<VehicleNode>(
     (node) => node.children
   );
+  
+
   public dataSource = new MatTreeNestedDataSource<VehicleNode>();
   @ViewChild('outputDiv', { static: false })
   public outputDivRef: ElementRef<HTMLParagraphElement>;
   public searchString = '';
   public showOnlySelected = false;
+
+
+  ngAfterViewInit() {
+    const bmwNode = this.dataSource.data.find(node => node.name === 'BMW');
+    console.log(bmwNode);
+     if (bmwNode) {
+      this.treeControl.expand(bmwNode);
+     }
+  }
 
   constructor() {
     this.dataSource.data = TREE_DATA;
@@ -116,23 +127,7 @@ export class TreeNestedOverviewExample {
   }
 
   public submit() {
-    // console.log(this.treeControl.getDescendants)
-    // console.log(this.dataSource.data)
-    // let result = this.dataSource.data.reduce(
-    //   (acc: string[], node: VehicleNode) =>
-    //     acc.concat(
-    //       this.treeControl
-    //         .getDescendants(node)
-    //         .filter(node => 
-    //           // This is the line to select the leaf only 
-    //           // (node.children == null || node.children.length === 0) &&
-    //            node.selected
-    //           // && !this.hideLeafNode(node)
-    //           )
-    //         .map((descendant) => descendant.name)
-    //     ),
-    //   [] as string[]
-    // );
+   
     let result = this.dataSource.data.reduce(
       (acc: string[], node: VehicleNode) => {
         if (node.selected) {
@@ -154,6 +149,7 @@ export class TreeNestedOverviewExample {
         ? 'selected ' + result.join(', ')
         : 'have not made a selection') +
       '.';
+      
   }
   
   // IF we dont find something we return false 
