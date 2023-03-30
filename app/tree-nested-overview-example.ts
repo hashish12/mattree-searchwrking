@@ -156,10 +156,13 @@ export class TreeNestedOverviewExample {
       '.';
   }
   
+  // IF we dont find something we return false 
   public hideLeafNode(node: VehicleNode): boolean {
     return new RegExp(this.searchString, 'i').test(node.name) === false;
   }
 
+  // If we find something we show parent or else if the parents
+  //child has the search string value we show the parents
   public hideParentNode(node: VehicleNode): boolean {
     if (
       !this.searchString ||
