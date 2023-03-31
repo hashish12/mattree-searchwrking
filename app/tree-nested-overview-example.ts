@@ -82,7 +82,9 @@ export class TreeNestedOverviewExample  implements AfterViewInit{
 
 
   ngAfterViewInit() {
-    console.log(this.treeControl.expandAll())
+    //console.log(this.treeControl.expandAll());
+    this.itemToggle(true,this.treeControl.getDescendants(this.treeControl.dataNodes[0])[0]);
+    console.log(this.treeControl.dataNodes[0]);
     const bmwNode = this.dataSource.data.find(node => node.name === 'Coupé');
     console.log(bmwNode);
      if (bmwNode) {
