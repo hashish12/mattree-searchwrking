@@ -11,6 +11,7 @@
     *matTreeNodeDef="let node" 
     matTreeNodeToggle
     [style.display]="showOnlySelected && !node.selected || this.searchString && hideLeafNode(node) ? 'none' : 'block'"
+    
   >
     <li class="mat-tree-node">
       <mat-checkbox class="checklist-leaf-node" (change)="itemToggle($event.checked,node)" [checked]="node.selected"

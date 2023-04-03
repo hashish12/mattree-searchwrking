@@ -14,6 +14,7 @@ interface VehicleNode {
   id?: number;
   children?: VehicleNode[];
   selected?: boolean;
+  disabled?: boolean;
   indeterminate?: boolean;
   parent?: VehicleNode;
 }
@@ -90,11 +91,6 @@ export class TreeNestedOverviewExample  implements AfterViewInit{
 
   ngAfterViewInit() {
     //console.log(this.treeControl.expandAll());
-    this.itemToggle(true,this.treeControl.getDescendants(this.treeControl.dataNodes[0])[0]);
-
-    console.log(this.treeControl.getDescendants(this.treeControl.dataNodes[0]));
-    
-    
      for (let i=0; i<this.treeControl.dataNodes.length; i++){
      if (selectedNodes.find (e => e.name === this.treeControl.dataNodes[i].name) ) {
       this.itemToggle(true,this.treeControl.dataNodes[i]);
@@ -111,7 +107,9 @@ export class TreeNestedOverviewExample  implements AfterViewInit{
           }
        }
   }
-}}
+  }
+ // console.log (this.treeControl.getDescendants(this.treeControl.dataNodes[1])[0].disabled);
+}
 
 
   constructor() {
@@ -140,7 +138,7 @@ export class TreeNestedOverviewExample  implements AfterViewInit{
   private checkAllParents(node: VehicleNode) {
     if (node.parent) {
       const descendants = this.treeControl.getDescendants(node.parent);
-      node.parent.selected = descendants.every((child) => child.selected);
+      //node.parent.selected = descendants.every((child) => child.selected);
       node.parent.indeterminate = descendants.some((child) => child.selected);
       this.checkAllParents(node.parent);
     }
@@ -153,12 +151,16 @@ export class TreeNestedOverviewExample  implements AfterViewInit{
     //      this.itemToggle(checked, child);
     //   });
     // }
+    if (node.children) {
+    this.itemDisable(checked,node);
+    }
     this.checkAllParents(node);
   }
 
-  // private itemDisable(checked: boolean, node: VehicleNode){
-  //   node.d
-  // }
+  private itemDisable(checked: boolean, node: VehicleNode){
+     const descendants = this.treeControl.getDescendants(node);
+     descendants.forEach(node => node.disabled=true);
+  }
 
   public submit() {
    
