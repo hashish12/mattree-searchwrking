@@ -45,7 +45,7 @@ const TREE_DATA: VehicleNode[] = [
         name: '2 Series',
         children: [
           { name: 'Coupé', id: 5 },
-          { name: 'Gran Coupé', id: 6,selected: true },
+          { name: 'Gran Coupé', id: 6 },
         ],
       },
       {
@@ -58,6 +58,14 @@ const TREE_DATA: VehicleNode[] = [
     ],
   },
 ];
+interface SelectedNode {
+  name: string;
+  
+}
+
+const selectedNodes: Array<SelectedNode> = [{name:'BMW'}, {name:'2 Series'}];
+
+
 
 /**
  * @title Tree with nested nodes
@@ -70,7 +78,6 @@ const TREE_DATA: VehicleNode[] = [
 export class TreeNestedOverviewExample  implements AfterViewInit{
   treeControl: NestedTreeControl<VehicleNode>;
 
-  
 
   
 
@@ -84,20 +91,35 @@ export class TreeNestedOverviewExample  implements AfterViewInit{
   ngAfterViewInit() {
     //console.log(this.treeControl.expandAll());
     this.itemToggle(true,this.treeControl.getDescendants(this.treeControl.dataNodes[0])[0]);
-    console.log(this.treeControl.dataNodes[0]);
-    const bmwNode = this.dataSource.data.find(node => node.name === 'Coupé');
-    console.log(bmwNode);
-     if (bmwNode) {
-      this.treeControl.expand(bmwNode);
-      this.itemToggle(true,bmwNode);
+
+    console.log(this.treeControl.getDescendants(this.treeControl.dataNodes[0]));
+    
+    
+     for (let i=0; i<this.treeControl.dataNodes.length; i++){
+     if (selectedNodes.find (e => e.name === this.treeControl.dataNodes[i].name) ) {
+      this.itemToggle(true,this.treeControl.dataNodes[i]);
      }
+     if  (this.treeControl.dataNodes[i].children){
+         console.log("has children");
+
+        const alldecendents = this.treeControl.getDescendants(this.treeControl.dataNodes[i]);
+         console.log(alldecendents);
+
+         for (let j=0; j<alldecendents.length; j++){
+          if (selectedNodes.find (e => e.name ===alldecendents[j].name) ) {
+           this.itemToggle(true,alldecendents[j]);
+          }
+       }
   }
+}}
+
 
   constructor() {
     
     this.treeControl = new NestedTreeControl<VehicleNode>( (node) => node.children);
     this.treeControl.dataNodes=TREE_DATA;
     this.dataSource.data = TREE_DATA;
+    
     Object.keys(this.dataSource.data).forEach((key) => {
       this.setParent(this.dataSource.data[key], null);
     });
@@ -126,13 +148,17 @@ export class TreeNestedOverviewExample  implements AfterViewInit{
 
   private itemToggle(checked: boolean, node: VehicleNode) {
     node.selected = checked;
-    if (node.children) {
-      node.children.forEach((child) => {
-        // this.itemToggle(checked, child);
-      });
-    }
+    // if (node.children) {
+    //   node.children.forEach((child) => {
+    //      this.itemToggle(checked, child);
+    //   });
+    // }
     this.checkAllParents(node);
   }
+
+  // private itemDisable(checked: boolean, node: VehicleNode){
+  //   node.d
+  // }
 
   public submit() {
    
