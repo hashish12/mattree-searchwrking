@@ -11,11 +11,11 @@
     *matTreeNodeDef="let node" 
     matTreeNodeToggle
     [style.display]="showOnlySelected && !node.selected || this.searchString && hideLeafNode(node) ? 'none' : 'block'"
-    
+
   >
     <li class="mat-tree-node">
-      <mat-checkbox class="checklist-leaf-node" (change)="itemToggle($event.checked,node)" [checked]="node.selected"
->{{node.name}}</mat-checkbox>
+      <mat-checkbox class="checklist-leaf-node" (change)="itemToggle($event.checked,node)" [disabled]="node.disabled" [checked]="node.selected"
+>{{node.name}} </mat-checkbox>
     </li>
   </mat-tree-node>
   <!-- This is the tree node template for expandable nodes -->
@@ -31,7 +31,7 @@
             {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
           </mat-icon>
         </button>
-            <mat-checkbox [checked]="node.selected"
+            <mat-checkbox [checked]="node.selected" [disabled]="node.disabled"
                   [indeterminate]="node.indeterminate && !node.selected"
                   (change)="itemToggle($event.checked,node)">{{node.name}}</mat-checkbox>
       </div>

@@ -90,6 +90,7 @@ export class TreeNestedOverviewExample  implements AfterViewInit{
 
 
   ngAfterViewInit() {
+  //  this.treeControl.expandAll();
     //console.log(this.treeControl.expandAll());
      for (let i=0; i<this.treeControl.dataNodes.length; i++){
      if (selectedNodes.find (e => e.name === this.treeControl.dataNodes[i].name) ) {
@@ -109,6 +110,8 @@ export class TreeNestedOverviewExample  implements AfterViewInit{
   }
   }
  // console.log (this.treeControl.getDescendants(this.treeControl.dataNodes[1])[0].disabled);
+ //this.treeControl.collapseAll();
+
 }
 
 
